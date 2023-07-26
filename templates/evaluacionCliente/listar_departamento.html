@@ -1,0 +1,87 @@
+{% extends 'base/base.html' %}
+
+{% load static %}
+
+{%block title%}
+  Listar Departamentos
+{%endblock%}
+
+{% block content %}
+	<div style="text-align:center; margin: 0 auto;">
+	    <div class="container" align="center">
+			
+			<font face="small fonts" size="10" color="#049286">
+				<h2 align="center" class="form-titulo" style ="margin-left: 5px; margin-top:20px; bg-success text-white">Listado de Departamentos</h2>
+			</font>
+
+	    	<button class="btn btn-outline-success" onclick="location.href='{% url 'evaluacionCliente:crear_departamento' %}'">Agregar</button>
+	    	<p></p>
+	    
+		</div>
+
+		{% if departamentos %}
+		    <div class="table-responsive">
+				<table id="bootstrapdatatable" class="table table-hover" style="table-layout: fixed;">
+					
+					<thead>
+						<tr>
+							<th>Codigo Departamento</th>
+							<th>Nombre del Departamento</th>	
+							<th>Opciones</th>
+						</tr>
+					</thead>
+					
+					<tbody>
+						{% for departamento in departamentos %}
+							<tr>
+								<td>{{ departamento.codigo_departamento }}</td>
+								<td>{{ departamento.nombre_departamento }}</td>	
+								<td>
+									<button type="button" class="btn btn-primary btn-sm tableButton"  onclick="location.href='{% url 'evaluacionCliente:editar_departamento' departamento.codigo_departamento %}'" style="color:white;"> Editar </button>
+									<button type="button" class="btn btn-danger tableButton  btn-sm" data-toggle="modal" data-target="#a{{ departamento.codigo_departamento }}">Eliminar</button>
+								</td>					
+							</tr>
+
+							<div class="modal fade" id="a{{ departamento.codigo_departamento }}" tabindex="-1"
+							     role="dialog" aria-labelledBy="fm-modal-grid"
+							    aria-hidden="true">
+							    <div class="modal-dialog modal-lg">
+							        <div class="modal-content">
+								        <div class="modal-header">
+								            Eliminación de {{ departamento.codigo_departamento }}
+								            <button type="button" class="close" data-dismiss="modal">&times;</button>
+								        </div>
+							            <div class="modal-body">
+									        <div class="modal-body text-center" >
+									            <h3><strong>¿Realmente desea eliminar el Departamento de {{ departamento.nombre_departamento }} con c&oacute;digo {{ departamento.codigo_departamento }}?</strong></h3>
+									        </div>							            
+							            <div class="modal-footer">
+											<form action="{% url 'evaluacionCliente:eliminar_departamento' departamento.codigo_departamento %}" method="POST">
+											       {% csrf_token %}
+											       <button class="btn btn-danger" data-align="right"><strong>CONFIRMAR ELIMINACIÓN</strong></button>
+											</form>
+							                <button class="btn btn-primary" data-dismiss="modal"><strong>CANCELAR</strong></button>
+							            </div>
+							        	</div>
+							    	</div>
+								</div>
+							</div>	
+							
+						{% endfor %}
+					</tbody>
+
+				</table>
+			</div>
+		</div>
+
+
+	{% else %}
+		<h1>No existen departamentos registrados</h1>
+	{% endif %}
+
+
+	{% block js %}
+
+	{% endblock js %}
+
+{% endblock content %}

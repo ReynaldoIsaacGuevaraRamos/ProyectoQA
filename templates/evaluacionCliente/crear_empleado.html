@@ -1,0 +1,61 @@
+{% extends 'base/base.html' %}
+{% block title %}
+  Crear Empleado
+{% endblock title %}
+{% block content %}
+
+<body class="row justify-content-center align-items-center">
+
+
+    <div class="container">
+    	<font face="small fonts" size="10" color="#049286">
+ 	       <h2 align="center" class="form-titulo" style ="margin-left: 5px; margin-top:20px; bg-success text-white">Registro de Empleado</h2>
+    	</font>
+    </div>
+
+	<hr style="width:75%; border-color:#049286; margin-botton: 2px" >
+
+	<div class="col-auto p-5 text-left " style="width:70%; margin:auto;">
+		<form method="POST">
+			{% csrf_token %}
+
+				<div class="justify">
+    				<h6 style="color: #ff0000">{{ empleado_form.nombres.errors }}</h6>
+    				<h6 style="color: #ff0000">{{ empleado_form.apellidos.errors }}</h6>
+    				<h6 style="color: #ff0000">{{ empleado_form.email.errors }}</h6>
+				</div> 
+
+				<label>Nombres Empleado:</label>
+				{{ empleado_form.nombres }}		
+
+				<label style ="margin-top:20px;">Apellidos Empleado: </label>				
+				{{ empleado_form.apellidos }}		
+
+				<label style ="margin-top:20px;">Correo Electronico:</label>				
+				{{ empleado_form.email }}	
+
+				<label style ="margin-top:20px;">Agencia:</label>				
+				{{ empleado_form.codigo_agencia }}		
+
+				<br>
+				<label style ="margin-top:20px;">Departamento:</label>				
+				{{ empleado_form.codigo_departamento }}		
+
+				<br>
+				<label style ="margin-top:20px;">Comite:</label>				
+				{{ empleado_form.id_comite }}	
+          	
+
+			<div align="center" style ="margin-top:40px;">
+				<button class="btn btn-outline-success" type="submit">Crear</button>			
+	      		<button class="btn btn-outline-danger" onclick="location.href='{% url 'evaluacionCliente:listar_empleados' %}'">Cancelar</button>
+			</div>
+		</form>
+	</div>
+</body
+
+
+
+
+
+{% endblock content %}

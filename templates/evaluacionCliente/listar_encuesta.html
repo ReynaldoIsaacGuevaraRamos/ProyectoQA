@@ -1,0 +1,233 @@
+{% extends 'base/base.html' %}
+
+{% load static %}
+
+{%block title%}
+  Consulta de Encuestas
+{%endblock%}
+
+{% block content %}
+	<div style="text-align:center; margin: 0 auto;">
+
+<!-- ######################################################################################################################################################### -->
+	<!-- VIENE DE LA VIEW  consultarEncuesta -->
+
+	    <div class="container" align="center">
+			
+			<font face="small fonts" size="10" color="#049286">
+				<h2 align="center" class="form-titulo" style ="margin-left: 5px; margin-top:20px; bg-success text-white">Consulta de Encuestas</h2>
+			</font>
+
+			{% if encuestasClientes %}
+				
+				<button class="btn btn-outline-success" onclick="location.href='{% url 'evaluacionCliente:agregar_preguntas_encuesta_cliente' codigoAgencia tituloEncuesta %}'">Agregar Preguntas</button>
+				<p></p>
+
+			{% else %}
+
+				<p></p>			
+			
+			{% endif %}
+	    
+		</div>
+
+<!-- ######################################################################################################################################################### -->
+	<!-- VIENE DE LA VIEW  listarEncuesta -->
+
+        <!-- Boton Buscar Agencia-->
+        {% if agenciasCon %}
+		
+        	</br>
+			<h5>Porfavor selecciona una Agencia para consultar sus Encuestas.</h5>
+			</br>
+
+			<div align="center" class="busqueda">
+				<form method="POST" action="{% url 'evaluacionCliente:consultar_agencia' %}">
+					{% csrf_token %} 
+					<select name="codigo_agencia" id="codigo_agencia" class="form-control col-4 col-sm-3 input-style" title="Selecciona la Agencia Porfavor" required>
+						<option selected value=""> Seleccione Agencia </option>
+							{% for i in agenciasCon %}
+								<option value="{{i.codigo_agencia}}">{{i.nombre_agencia}}</option> 
+							{% endfor %}
+						</option> 
+					</select></br>
+					<input class="btn btn-outline-success" type = "submit" value = "Buscar" id = "AgenciaBuscar">
+				</form>
+			</div>
+		
+		{% endif %}
+        </br>
+
+<!-- ######################################################################################################################################################### -->
+	<!-- VIENE DE LA VIEW  consultarAgencia -->
+
+		<!-- Boton Buscar Encuesta-->
+		{% if encuestasAgencia %}
+
+			<h5>Porfavor selecciona la Encuesta que quieres consultar.</h5>
+			</br>
+
+			<div class="table-responsive" style="width:50%; display:inline-block;">
+				<table class="table table-hover text-center">
+					
+					<thead>
+						<tr>
+							<th class="text-center" style="color:#049286"><strong>Agencia:</strong></th>
+							{% for i in nombreAgencia%}
+								<th class="text-center"><i>{{ i.nombre_agencia }}</i></th>
+							{% endfor %}
+						</tr>
+					</thead>
+
+				</table>
+			</div>
+
+			</br></br>
+		
+			<div align="center" class="busqueda">
+				<form method="POST" action="{% url 'evaluacionCliente:consultar_encuesta' codAgencia %}">
+					{% csrf_token %} 
+					<select name="titulo_encuesta" id="titulo_encuesta" class="form-control col-4 col-sm-3 input-style" title="Selecciona la Encuesta a Consultar" required>
+						<option selected value=""> Seleccione la Encuesta </option>
+							{% for i in encuestasAgencia %}
+								<option value="{{i.titulo_encuesta_cliente}}">{{i.titulo_encuesta_cliente}}</option> 
+							{% endfor %}
+						</option> 
+					</select></br>
+					<input class="btn btn-outline-success" type = "submit" value = "Buscar" id = "AgenciaBuscar"></br>
+				</form>
+			</div>
+
+			</br></br></br>
+			<h5>Si no encuentras la Encuesta que buscas,</br> puedes crear una tu mismo.</h5>
+			</br>
+			<button type="button" class="btn btn-outline-success" onclick="window.location.href='{% url 'evaluacionCliente:crear_encuesta' codAgencia %}'">Crear Encuesta</button>
+
+		{% else %}
+
+			{% if codigo_agencia %}
+
+				<div class="table-responsive" style="width:50%; display:inline-block;">
+					<table class="table table-hover text-center">
+						
+						<thead>
+							<tr>
+								<th class="text-center" style="color:#049286"><strong>Agencia:</strong></th>
+								{% for i in nombreAgencia%}
+									<th class="text-center"><i>{{ i.nombre_agencia }}</i></th>
+								{% endfor %}
+							</tr>
+						</thead>
+
+					</table>
+				</div>
+
+				</br></br></br>
+				<h5>Si no encuentras la Encuesta que buscas,</br> puedes crear una tu mismo.</h5>
+				</br>
+				<button type="button" class="btn btn-outline-success" onclick="window.location.href='{% url 'evaluacionCliente:crear_encuesta' codAgencia %}'">Crear Encuesta</button>
+			
+			{% endif %}
+
+		{% endif %}
+        </br>
+
+<!-- ######################################################################################################################################################### -->
+	<!-- VIENE DE LA VIEW  consultarEncuesta -->
+
+		{% if encuestasClientes %}
+
+			<div class="table-responsive" style="width:60%; display:inline-block;">
+				<table class="table table-hover text-center">
+					
+					<thead>
+						<tr>
+							<th class="text-center" style="color:#049286">Agencia</th>
+							<th class="text-center" style="color:#049286">Título Encuesta</th>
+							<th class="text-center" style="color:#049286">Desde</th>
+							<th class="text-center" style="color:#049286">Hasta</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr>
+							<td><strong>{{ nombreAgencia }}</strong></td>
+							<td><strong><i><a style="color:black;" href="{% url 'evaluacionCliente:editar_inf_encuesta' idCl %}">{{ tituloEncuesta }}</a></i></strong></td>
+							<td><strong><i><a style="color:black;" href="{% url 'evaluacionCliente:editar_inf_encuesta' idCl %}">{{ desde }}</a></i></strong></td>
+							{% ifequal hasta None %}
+								<td><strong><i><a style="color:black;" href="{% url 'evaluacionCliente:editar_inf_encuesta' idCl %}"> - </a></i></strong></td>
+							{% else %}
+								<td><strong><i><a style="color:black;" href="{% url 'evaluacionCliente:editar_inf_encuesta' idCl %}">{{ hasta }}</a></i></strong></td>
+							{% endifequal %}
+						</tr>
+					</tbody>
+
+				</table>
+			</div>
+
+
+		    <div class="table-responsive" style="width:93%; display:inline-block;">
+				<table id="bootstrapdatatable" class="table table-hover">
+					<thead>
+						<tr>
+							<th>Descripción de la Pregunta</th>	
+							<th>Visibilidad de la Pregunta</th>
+							<th>Opción</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						{% for enc in encuestasClientes %}
+							<tr>
+                                <td>{{ enc.descripcion_pregunta }}</td>	
+								{% ifequal enc.visibilidad_pregunta_cliente 'S' %}
+                                	<td>Visible al usuario.</td>
+								{% else %}
+									<td>NO Visible al usuario.</td>	
+								{% endifequal %}
+								<td>
+									<button type="button" class="btn btn-primary btn-sm tableButton"  onclick="location.href='{% url 'evaluacionCliente:editar_encuesta' enc.id %}'" style="color:white;"> Editar </button>
+									<button type="button" class="btn btn-danger tableButton  btn-sm" data-toggle="modal" data-target="#a{{ enc.id }}">Eliminar</button>
+								</td>					
+							</tr>
+
+							<div class="modal fade" id="a{{ enc.id }}" tabindex="-1" role="dialog" aria-labelledBy="fm-modal-grid" aria-hidden="true">
+							    <div class="modal-dialog modal-lg">
+							        <div class="modal-content">
+								        
+										<div class="modal-header">
+											<i>Eliminaci&oacute;n de la pregunta:</i> <strong> {{ enc.descripcion_pregunta }} </strong>
+								            <button type="button" class="close" data-dismiss="modal">&times;</button>
+								        </div>
+							            
+										<div class="modal-body">
+									        <div class="modal-body text-center" >
+									            <h4><i>¿Realmente desea eliminar la pregunta</i> <strong> {{ enc.descripcion_pregunta }} </strong> <i>de la Encuesta?</i></h4>
+									        </div>							            
+							            
+											<div class="modal-footer">
+												<form action="{% url 'evaluacionCliente:eliminar_encuesta' enc.id %}" method="POST">
+													{% csrf_token %}
+													<button class="btn btn-danger" data-align="right"><strong>Confirmar</strong></button>
+												</form>
+												<button class="btn btn-primary" data-dismiss="modal"><strong>Cancelar</strong></button>
+											</div>
+										</div>
+
+							    	</div>
+								</div>
+							</div>
+							
+						{% endfor %}
+					</tbody>
+
+				</table>
+			</div>
+		{% endif %}
+	</div>
+
+	{% block js %}
+
+	{% endblock js %}
+
+{% endblock content %}

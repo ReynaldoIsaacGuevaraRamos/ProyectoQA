@@ -1,0 +1,135 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{%block title%}
+  Listar Empleados
+{%endblock%}
+
+{% block content %}
+	<div style="text-align:center; margin: 0 auto;">
+	    
+	    <div class="container" align="center">
+			
+			<font face="small fonts" size="10" color="#049286">
+				<h2 align="center" class="form-titulo" style ="margin-left: 5px; margin-top:20px; margin-bottom:1px; bg-success text-white">Listado de Empleados a enviar correo electronico de invitacion</h2>
+			</font>
+
+			{% if empleados_filtro %}
+
+			<button class="btn btn-outline-success" onclick="location.href='{% url 'evaluacionCliente:enviar_correo' agencia departamento comite %}'">Confirmar empleados filtrados</button>
+
+			{% endif %}
+
+
+	    
+		</div>
+
+	    <!-- Boton Buscar Fech-->
+	    <div align="center" class="busqueda">
+	        <form method="POST"  style ="margin-top:20px;" action="{% url 'evaluacionCliente:filtrar_empleados_correo' %}">
+	            {% csrf_token %} 
+	            
+			  <div class="form-row" style="width:95%; margin:auto;">
+			    <div class="form-group col-md-4">
+		            <select name="agency" class="form-control" title="Selecciona el Docente Por Favor">
+		                <option selected value=""> Selecciona la Agencia </option>
+		                    {% if agencias %}
+		                        {% for age in agencias %}
+		                            <option value="{{ age.codigo_agencia }}">{{ age.nombre_agencia }}</option>
+		                        {% endfor %}
+		                    {% endif %}
+		                </option> 
+		            </select>
+			    </div>
+			    <div class="form-group col-md-4">
+		            <select name="depto" class="form-control" title="Selecciona el Departamento Por Favor">
+		                <option selected value=""> Selecciona el Departamento </option>
+		                    {% if agencias %}
+		                        {% for dep in departamentos %}
+		                            <option value="{{ dep.codigo_departamento }}">{{ dep.nombre_departamento }}</option>
+		                        {% endfor %}
+		                    {% endif %}
+		                </option> 
+		            </select>
+			    </div>
+			    <div class="form-group col-md-4">
+		            <select name="comit" class="form-control input-style input-lg" title="Selecciona el Comite Por Favor">
+		                <option selected value=""> Selecciona el Comite </option>
+		                    {% if comites %}
+		                        {% for com in comites %}
+		                            <option value="{{ com.id_comite }}">{{ com.nombre_comite }}</option>
+		                        {% endfor %}
+		                    {% endif %}
+		                </option> 
+		            </select>	
+			    </div>
+			  </div>	            
+
+          		<input class="btn btn-success col-2" type = "submit" value = "Filtrar Busqueda" id = "fechaBuscar"></input>
+
+				<input class="btn btn-danger col-2" value = "Cancelar" onclick="location.href='{% url 'evaluacionCliente:listar_actividad' %}'"></input>
+
+	        </form> 
+
+	    </div>	
+
+		    <div class="table-responsive">
+				<table id="bootstrapdatatable" class="table table-hover" style="table-layout: fixed;">
+					
+					<thead>
+						<tr>
+							<th>Nombres</th>
+							<th>Apellidos</th>	
+							<th>Agencia</th>	
+							<th>Departamento</th>	
+							<th>C&oacute;mite</th>	
+							<th>correo</th>
+						</tr>
+					</thead>
+
+						<tbody>
+
+	    		{% if empleados_filtro %}
+					{% for empage in empleados_filtro %}
+
+							<tr>
+								<td>{{ empage.nombres }}</td>
+								<td>{{ empage.apellidos }}</td>
+								<td>{{ empage.codigo_agencia }}</td>
+								<td>{{ empage.codigo_departamento }}</td>
+								<td>{{ empage.id_comite }}</td>
+								<td>{{ empage.email }}</td>
+							</tr>
+
+					{% endfor %}
+				
+				{% elif empleados %}
+
+						{% for emp in empleados %}
+							<tr>
+								<td>{{ emp.nombres }}</td>
+								<td>{{ emp.apellidos }}</td>
+								<td>{{ emp.codigo_agencia }}</td>
+								<td>{{ emp.codigo_departamento }}</td>
+								<td>{{ emp.id_comite }}</td>
+								<td>{{ emp.email }}</td>
+							</tr>
+
+						{% endfor %}
+					</tbody>
+					
+				</table>
+			</div>
+		</div>
+
+
+				{% else %}
+					<h1>No existen empleados registrados, que cumplan estas condiciones</h1>
+				{% endif %}
+
+
+	{% block js %}
+
+	{% endblock js %}
+
+{% endblock content %}

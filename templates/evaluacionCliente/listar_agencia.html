@@ -1,0 +1,82 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+  Listar Agencias
+{% endblock title %}
+
+{% block content %}
+
+	<div style="text-align:center; margin: 0 auto;">
+	    <div class="container" align="center">
+
+			<font face="small fonts" size="10" color="#049286">
+				<h2 align="center" class="form-titulo" style ="margin-left: 5px; margin-top:20px; bg-success text-white">Listado de Agencias</h2>
+			</font>
+
+			<button class="btn btn-outline-success" onclick="location.href='{% url 'evaluacionCliente:crear_agencia' %}'">Agregar</button>
+	        <p> </p>
+
+	    </div>
+
+		{% if agencias %}
+		    <div class="table-responsive">
+				<table id="bootstrapdatatable" class="table table-hover" style="table-layout: fixed;">
+
+					<thead>
+						<tr>
+							<th>Codigo Agencia</th>
+							<th>Nombre de la Agencia</th>	
+							<th>Direccion de la Agencia</th>	
+							<th>Opciones</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						{% for agencia in agencias %}
+							<tr>
+								<td>{{ agencia.codigo_agencia }}</td>
+								<td>{{ agencia.nombre_agencia }}</td>	
+								<td>{{ agencia.direccion_agencia }}</td>	
+								<td>
+									<button type="button" class="btn btn-primary btn-sm tableButton"  onclick="location.href='{% url 'evaluacionCliente:editar_agencia' agencia.codigo_agencia %}'" style="color:white;"> Editar </button>
+									<button type="button" class="btn btn-danger tableButton  btn-sm" data-toggle="modal" data-target="#a{{ agencia.codigo_agencia }}">Eliminar</button>
+								</td>					
+							</tr>
+
+							<div class="modal fade" id="a{{ agencia.codigo_agencia }}" tabindex="-1"
+							     role="dialog" aria-labelledBy="fm-modal-grid"
+							    aria-hidden="true">
+							    <div class="modal-dialog modal-lg">
+							        <div class="modal-content">
+								        <div class="modal-header">
+								            Eliminaci&oacute;n de {{ agencia.codigo_agencia }}
+								            <button type="button" class="close" data-dismiss="modal">&times;</button>
+								        </div>
+							            <div class="modal-body">
+									        <div class="modal-body text-center" >
+									            <h3><strong>¿Realmente desea eliminar la agencia con c&oacute;digo {{ agencia.codigo_agencia }}?</strong></h3>
+									        </div>							            
+							            <div class="modal-footer">
+											<form action="{% url 'evaluacionCliente:eliminar_agencia' agencia.codigo_agencia %}" method="POST">
+											       {% csrf_token %}
+											       <button class="btn btn-danger" data-align="right"><strong>CONFIRMAR ELIMINACIÓN</strong></button>
+											</form>
+							                <button class="btn btn-primary" data-dismiss="modal"><strong>CANCELAR</strong></button>
+							            </div>
+							        	</div>
+							    	</div>
+								</div>
+							</div>
+
+						{% endfor %}
+					</tbody>
+
+				</table>
+			</div>
+		</div>		
+
+		{% else %}
+			<h1>No existen agencias registrados</h1>
+		{% endif %}
+
+{% endblock content %}

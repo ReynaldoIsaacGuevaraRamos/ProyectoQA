@@ -1,0 +1,18 @@
+<div>
+    <div class="modal" id="myModal" >
+        <form action=" {% url 'evaluacionCliente:eliminar_departamento' object.pk %}" method="post">
+            <div class="modal-body">
+                {% csrf_token %}
+                <div class="mdl-dialog__content" align="center">
+                    <h4> ¿Realmente desea eliminar este Departamento? </h4>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-lg-12 text-right">
+                    <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent btn-buscar" name="submit" value="Si, Eliminar">
+                     <a href = "{% url 'evaluacionCliente:listar_departamento' %}"><input type="button" href="{% url 'evaluacionCliente:listar_departamento' %}" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent btn-buscar" name="submit" value="Cancelar"></a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

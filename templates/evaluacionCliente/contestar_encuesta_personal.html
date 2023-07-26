@@ -1,0 +1,344 @@
+{% extends 'base/base.html' %}
+
+{% load static %}
+
+{%block title%}
+  Encuesta Personal
+{%endblock%}
+
+{% block content %}
+
+<meta http-equiv="refresh" content="90; url={% url 'evaluacionCliente:index' %}"/>
+<link rel="stylesheet" href="{% static 'css/imgEncuesta.css' %}">
+
+
+<!-- ######################################################################################################################################################### -->
+	<!-- VIENE DE LA VIEW  contestarEncuestaPersonal -->
+
+    <!-- Boton Buscar Agencia-->
+        {% if actividadesCon %}
+
+            <div style="text-align:center; margin: 0 auto;">
+                <div class="container" align="center">
+                    <font face="small fonts" size="10" color="#049286">
+                        <h2 align="center" class="form-titulo" style ="margin-left: 5px; margin-top:20px; bg-success text-white">Encuestas de Personal</h2>
+                    </font>
+                </div>
+            </div>
+		
+        	</br>
+			<h5 align="center">Porfavor selecciona la Actividad de la Agencia para consultar sus Encuestas de Personal.</h5>
+			</br>
+
+			<div align="center" class="busqueda">
+				<form method="POST" action="{% url 'evaluacionCliente:consultar_actividad_encuesta_de_personal' %}">
+					{% csrf_token %} 
+					<select name="codigo_actividad" id="codigo_actividad" class="form-control col-4 col-sm-3 input-style" title="Selecciona la Actividad de la Agencia Porfavor" required>
+						<option selected value=""> Seleccione Actividad de Agencia</option>
+							{% for i in actividadesCon %}
+								<option value="{{i.id_actividad}}">{{i.codigo_agencia.nombre_agencia}} | {{i.nombre_actividad}}</option> 
+							{% endfor %}
+						</option> 
+					</select></br>
+					<input class="btn btn-outline-success" type = "submit" value = "Buscar" id = "ActividadBuscar">
+				</form>
+			</div>
+		
+		{% endif %}
+
+<!-- ######################################################################################################################################################### -->
+	<!-- VIENE DE LA VIEW  consultarActividadEncuestaDePersonal -->
+
+    <!-- Boton Buscar Encuesta-->
+		{% if encuestasActividad %}
+
+            <div style="text-align:center; margin: 0 auto;">
+                <div class="container" align="center">
+                    <font face="small fonts" size="10" color="#049286">
+                        <h2 align="center" class="form-titulo" style ="margin-left: 5px; margin-top:20px; bg-success text-white">Encuestas de Personal</h2>
+                    </font>
+                </div>
+            </div>
+
+            </br>
+			<h5 align="center">Porfavor seleccione la Encuesta que quiere contestar.</h5>
+			</br>
+
+            <div style="text-align:center; margin: 0 auto;">
+                <div class="container" align="center">
+                    <table class="table table-hover text-center" style="width:50%">
+                        <thead>
+						<tr>
+							<th class="text-center" style="color:#049286"><strong>Agencia:</strong></th>
+							{% for i in nombreActividad %}
+								<th class="text-center"><i>{{ i.codigo_agencia.nombre_agencia }}</i></th>
+							{% endfor %}
+						</tr>
+                        <tr>
+							<th class="text-center" style="color:#049286"><strong>Actividad:</strong></th>
+							{% for i in nombreActividad %}
+								<th class="text-center"><i>{{ i.nombre_actividad }}</i></th>
+							{% endfor %}
+						</tr>
+					</thead>
+                    </table>
+                </div>
+            </div>
+
+            </br>
+		
+			<div align="center" class="busqueda">
+				<form method="POST" action="{% url 'evaluacionCliente:consultar_encuesta_de_personal' codActividad %}">
+					{% csrf_token %}
+
+					<select name="titulo_encuesta" id="titulo_encuesta" class="form-control col-4 col-sm-3 input-style" title="Selecciona la Encuesta a Consultar" required>
+						<option selected value=""> Seleccione la Encuesta </option>
+							
+                            {% for tit in titulosEncuestas %}
+                                <option value="{{tit}}">{{tit}}</option> 
+                            {% endfor %}
+						
+                        </option> 
+					</select></br>
+					
+                    <input class="btn btn-outline-success" type = "submit" value = "Buscar" id = "ActividadBuscar"></br>
+				</form>
+			</div>
+
+    <!-- ############################################################################################################################# -->
+    <!-- PARA OBTENER EL ENLACE -->
+
+            </br></br>
+
+            <hr size="3" style="width: 70%;" color="#rgba(42, 38, 38, 0.945); ">
+            </br>
+
+            <div style="text-align:center; margin: 0 auto;">
+                <div class="container" align="center">
+                    <font face="small fonts" size="10" color="#049286">
+                        <h2 align="center" class="form-titulo" style ="margin-left: 5px; margin-top:20px; bg-success text-white">Obtener Enlace</h2>
+                    </font>
+                </div>
+            </div>
+
+            </br>
+			<h5 align="center">Si solo desea obtener el enlace de la encuesta </br> porfavor seleccionela de la lista y presione el bot&oacute;n "Enlace".</h5>
+			</br>
+
+            <div align="center" class="busqueda">
+                <form method="POST" action="{% url 'evaluacionCliente:consultar_encuesta_de_personal2' codActividad %}">{% csrf_token %}
+                    <select name="titulo_encuesta" id="titulo_encuesta" class="form-control col-4 col-sm-3 input-style" title="Selecciona la Encuesta a Consultar" required>
+                        <option selected value=""> Seleccione la Encuesta </option>
+                            {% for tit in titulosEncuestas %}
+                                <option value="{{tit}}">{{tit}}</option> 
+                            {% endfor %}
+                        </option> 
+                    </select></br>
+                    <input class="btn btn-outline-success" type = "submit" value = "Enlace" id = "ActividadBuscar"></br>
+                </form>
+            </div>
+
+            </br></br></br>
+
+        {% endif %}
+
+        {% if enlace %}
+
+            <div style="text-align:center; margin: 0 auto;">
+                <div class="container" align="center">
+                    <font face="small fonts" size="10" color="#049286">
+                        <h2 align="center" class="form-titulo" style ="margin-left: 5px; margin-top:20px; bg-success text-white">Enlace de la Encuesta</h2>
+                    </font>
+                </div>
+            </div>
+
+            <div class="col-auto p-5 text-left " style="width:65%; margin:auto;">
+
+                <label>Enlace de Encuesta</label>
+                <input type="text" class="form-control" value="{{enlace}}" readonly>
+
+                <div align="center" class="busqueda">
+                    <form method="POST" action="{% url 'evaluacionCliente:consultar_actividad_encuesta_de_personal' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="codigo_actividad" class="form-control" value="{{codigoActividad}}">
+                        </br>
+                        <input class="btn btn-outline-danger" type = "submit" value = "Cancelar"></br>
+                    </form>
+                </div>
+
+            </div>
+
+        {% endif %}
+
+    <!-- ############################################################################################################################# -->
+                    
+
+        {% if noHayEncuestas %}
+
+            <div style="text-align:center; margin: 0 auto;">
+                <div class="container" align="center">
+                    <font face="small fonts" size="10" color="#049286">
+
+                        <h1 align="center" class="form-titulo" style ="margin-left: 5px; margin-top:20px; bg-success text-white">
+                            <strong>¡No se encontraron Encuestas!</strong> 
+                        </h1> 
+                        
+                        <h2 align="center" class="form-titulo" style ="margin-left: 5px; color:black; margin-top:20px; bg-success text-white">
+                            Porfavor verifique que est&aacute; Actividad </br> posea su correspondiente encuesta.
+                        </h2>
+
+                        <div class="imgResponsiva">
+                            </br>
+                            <img src="{% static './assets/img/LogoAcopus.png' %}" style="height: 15%; width: 30%;"/> </label>
+                        </div>
+
+                        </br>
+
+                        <div class="container" align="center">
+                            <input align="center" class="btn btn-outline-success" type = "submit" value = "Inicio" id = "AgenciaBuscar" onclick="location.href='{% url 'evaluacionCliente:index' %}'">
+                        </div>
+
+                    </font>
+                </div>
+            </div>
+
+        {% endif %}
+
+<!-- ######################################################################################################################################################### -->
+
+    {% if descripcionPregunta %}
+
+        <div style="text-align:center; margin: 0 auto;">
+            <div class="container" align="center">
+                <font face="small fonts" size="10" color="#049286">
+                    <h2 align="center" class="form-titulo" style ="margin-left: 5px; margin-top:20px; bg-success text-white">{{ tituloEncuesta }}</h2>
+                </font>
+            </div>
+        </div>
+
+        </br>
+
+        <hr size="3" style="width: 70%;" color="#rgba(42, 38, 38, 0.945); ">
+        </br>
+
+        <h4 align="center">{{ descripcionPregunta }}</h4>
+
+        <div class="imgWrapper3">
+
+            <form method="POST" action="{% url 'evaluacionCliente:contestar_encuesta_de_personal' codigoActividad tituloEncuesta descripcionPregunta contador%}"> 
+                {% csrf_token %} 
+                
+                <div class="imgResponsiva">
+                    <img src=""/>
+                </div>
+
+                <div class="imgResponsiva">
+                    <input type="radio" class="radio_item" name="respuesta" id="radio1" value="1" required>
+                    <label class="label_item" for="radio1"> <img src="{% static './assets/img/Caritas/Cara_Feliz.png' %}" /> </label>
+                    <div align="center" class="pieFoto" align="center">Excelente</div>
+                </div>
+                
+                <div class="imgResponsiva">
+                    <input type="radio" class="radio_item" name="respuesta" id="radio2" value="2" required>
+                    <label class="label_item" for="radio2"> <img src="{% static './assets/img/Caritas/Cara_Seria.png' %}"/> </label>
+                    <div align="center" class="pieFoto" align="center">Regular</div>
+                </div>
+                
+                <div class="imgResponsiva cc-selector">
+                    <input type="radio" class="radio_item" name="respuesta" id="radio3" value="3" required>
+                    <label class="label_item" for="radio3"> <img src="{% static './assets/img/Caritas/Cara_Enojo.png' %}"/> </label>
+                    <div align="center" class="pieFoto">Pesimo</div>
+                </div>
+                
+                <div class="imgResponsiva cc-selector">
+                    <img src=""/>
+                </div>
+
+                </br>
+
+                {% if fin %}
+                    
+                    <div class="container" align="center">
+                        <input align="center" class="btn btn-outline-success" type = "submit" value = "Terminar" id = "AgenciaBuscar">
+                    </div>
+                    
+                {% else %}
+                
+                    <div class="container" align="center">
+                        <input align="center" class="btn btn-outline-success" type = "submit" value = "Siguiente" id = "AgenciaBuscar">
+                    </div>
+                
+                {% endif %}
+                
+            </form>
+        </div>
+
+        </br>
+
+        <hr size="3" style="width: 70%;" color="#rgba(42, 38, 38, 0.945); ">
+
+    {% endif %}
+
+    {% if mensajeNV %}
+
+        <div style="text-align:center; margin: 0 auto;">
+            <div class="container" align="center">
+                <font face="small fonts" size="10" color="#049286">
+
+                    <h1 align="center" class="form-titulo" style ="margin-left: 5px; margin-top:20px; bg-success text-white">
+                        <strong>¡No se encontraron Preguntas para est&aacute; Encuesta!</strong> 
+                    </h1> 
+                    
+                    <h2 align="center" class="form-titulo" style ="margin-left: 5px; color:black; margin-top:20px; bg-success text-white">
+                        Porfavor verifique que se hayan agregado </br> preguntas a est&aacute; Encuesta
+                    </h2>
+
+                    <div class="imgResponsiva">
+                        </br>
+                        <img src="{% static './assets/img/LogoAcopus.png' %}" style="height: 15%; width: 30%;"/> </label>
+                    </div>
+
+                    </br>
+
+                    <div class="container" align="center">
+                        <input align="center" class="btn btn-outline-success" type = "submit" value = "Inicio" id = "AgenciaBuscar" onclick="location.href='{% url 'evaluacionCliente:index' %}'">
+                    </div>
+
+                </font>
+            </div>
+        </div>
+
+    {% endif %}
+
+    {% if mensaje %}
+
+        <div style="text-align:center; margin: 0 auto;">
+            <div class="container" align="center">
+                <font face="small fonts" size="10" color="#049286">
+
+                    <h1 align="center" class="form-titulo" style ="margin-left: 5px; margin-top:20px; bg-success text-white">
+                        <strong>¡Muchas Gracias por su colaboraci&oacute;n!</strong> 
+                    </h1> 
+                    
+                    <h2 align="center" class="form-titulo" style ="margin-left: 5px; color:black; margin-top:20px; bg-success text-white">
+                        Agradecemos el tiempo que nos brinda </br>en contestar est&aacute; encuesta.
+                    </h2>
+
+                    <div class="imgResponsiva">
+                        </br>
+                        <img src="{% static './assets/img/LogoAcopus.png' %}" style="height: 15%; width: 30%;"/> </label>
+                    </div>
+
+                    </br>
+
+                    <div class="container" align="center">
+                        <input align="center" class="btn btn-outline-success" type = "submit" value = "Inicio" id = "AgenciaBuscar" onclick="location.href='{% url 'evaluacionCliente:index' %}'">
+                    </div>
+
+                </font>
+            </div>
+        </div>
+
+    {% endif %}
+
+{% endblock content %}

@@ -1,0 +1,116 @@
+.imgWrapper4, .imgWrapper3 {
+    font-size: 0;
+}
+
+.imgWrapper4 .imgResponsiva,
+
+.imgWrapper3 .imgResponsiva {
+    display: inline-block;
+    font-size: inherit;
+    padding: 20px;                  /* Cambie el valor de espaciado como desee aquí */
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    cursor:pointer;
+    background-size:contain;
+    background-repeat:no-repeat;
+}
+
+.imgWrapper4 .imgResponsiva {width: 25%;}
+
+.imgWrapper3 .imgResponsiva {
+    width: 20%;
+}
+
+.imgResponsiva img {
+    height: auto;
+    width: 100%;
+}
+
+.pieFoto {
+    position: inline-block; 
+    bottom: 5px; 
+    background-color: white; 
+    padding: 5px 10px; 
+    opacity: 0.6; 
+    font-weight: bold; 
+    color: black; 
+    font-size: 15px;
+}
+
+
+
+/* ******* Prueba 1 Radio-Imgenes ******* */
+
+.radio_item{
+    display: none !important;
+}
+
+.label_item {
+    opacity: 0.5;
+}
+
+.radio_item:checked + label {
+    opacity: 1;
+    -webkit-filter: none;
+       -moz-filter: none;
+            filter: none;
+}
+
+.label_item:hover {
+    -webkit-filter: brightness(1) grayscale(.5) opacity(.6);
+       -moz-filter: brightness(1) grayscale(.5) opacity(.6);
+            filter: brightness(1) grayscale(.5) opacity(.6);
+}
+
+label {
+    cursor: pointer;   
+}
+
+
+
+/* ******** Prueba 2 Radio-Imgenes ********** */
+
+/*.cc-selector input{
+    margin:0;padding:0;
+    -webkit-appearance:none;
+       -moz-appearance:none;
+            appearance:none;
+}
+.visa{background-image:url(/static/assets/img/Caritas/Cara_Enojo.png);}
+.mastercard{background-image:url(http://i.imgur.com/SJbRQF7.png);}
+
+.enojo{background-image:url(/static/assets/img/Caritas/Cara_Enojo.png);}
+.serio{background-image:url(/static/assets/img/Caritas/Cara_Seria.png);}
+.feliz{background-image:url(/static/assets/img/Caritas/Cara_Feliz.png);}
+
+.cc-selector input:active +.drinkcard-cc{opacity: .9;}
+.cc-selector input:checked +.drinkcard-cc{
+    -webkit-filter: none;
+       -moz-filter: none;
+            filter: none;
+}
+.drinkcard-cc {
+    cursor:pointer;
+    background-size:contain;
+    background-repeat:no-repeat;
+    display:inline-block;
+    width:400px;
+    height:150px;
+    -webkit-transition: all 100ms ease-in;
+       -moz-transition: all 100ms ease-in;
+            transition: all 100ms ease-in;
+    -webkit-filter: brightness(1.8) grayscale(1) opacity(.7);
+       -moz-filter: brightness(1.8) grayscale(1) opacity(.7);
+            filter: brightness(1.8) grayscale(1) opacity(.7);
+}
+.drinkcard-cc:hover{
+    -webkit-filter: brightness(1.2) grayscale(.5) opacity(.9);
+       -moz-filter: brightness(1.2) grayscale(.5) opacity(.9);
+            filter: brightness(1.2) grayscale(.5) opacity(.9);
+}*/
+
+/* Extras */
+/*a:visited{color:#888}
+a{color:#444;text-decoration:none;}
+p{margin-bottom:.3em;}*/

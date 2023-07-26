@@ -1,0 +1,67 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{%block title%}
+  Crear Encuesta de Personal
+{%endblock%}
+
+{% block content %} 
+    
+    <div style="text-align:center; margin: 0 auto;">
+	    <div class="container" align="center">
+            </br>
+            <font face="small fonts" size="10" color="#049286">
+				<h2 align="center" class="form-titulo" style ="margin-left: 5px; margin-top:20px; bg-success text-white">Creación de Encuesta de Personal</h2>
+			</font>
+        </div>
+
+	    <hr style="width:75%; border-color:#049286; margin-botton: 2px" >
+
+		<div align="center" class="busqueda">
+            <form method="POST" action="{% url 'evaluacionCliente:crear_encuesta_personal' codigoActividad %}">
+                {% csrf_token %}
+
+                <div class="col-auto p-5 text-left " style="width:60%; margin:auto;">
+                    <label style ="margin-top:20px;">Agencia</label>
+                    {% for i in act %}
+                        <input type="text" class="form-control" value="{{i.codigo_agencia.nombre_agencia}}" readonly>
+                    {% endfor %}
+
+                    <label style ="margin-top:20px;">Actividad</label>
+                    {% for i in act %}
+                        <input type="text" class="form-control" value="{{i.nombre_actividad}}" readonly>
+                    {% endfor %}
+
+                    <label style ="margin-top:20px;">Título Encuesta</label>
+                    <input type="text" class="form-control" id="titulo" name="titulo" required minlength="5">
+
+                    <label style ="margin-top:20px;">Fecha Desde</label>
+                    <input type="date" class="form-control" id="fecha_desde" name="fecha_desde" min="1999-01-13" required>
+                    
+                    <label style ="margin-top:20px;">Fecha Hasta</label>
+                    <input type="date" class="form-control" id="fecha_hasta" name="fecha_hasta">
+                    
+                    <label style ="margin-top:20px;">Descripción Pregunta</label>
+                    <input type="text" class="form-control" id="pregunta" name="pregunta" required minlength="5">
+
+                    <label style ="margin-top:20px;">Visibilidad Pregunta</label></br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="visibilidad" name="visibilidad" value="S" checked>
+                        <label class="form-check-label" for="inlineRadio1">Visible.</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="visibilidad" name="visibilidad" value="N">
+                        <label class="form-check-label" for="inlineRadio2">NO Visible.</label>
+                    </div>
+                    
+                    <div align="center" style ="margin-top:40px;">
+                        <button class="btn btn-outline-success" type="submit">Confirmar</button>
+                        <button type="button" class="btn btn-outline-danger" onclick="window.location.href='{% url 'evaluacionCliente:consultar_actividad2_personal' codigoActividad %}'">Cancelar</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock content %}

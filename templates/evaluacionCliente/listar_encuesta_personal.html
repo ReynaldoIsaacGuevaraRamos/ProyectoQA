@@ -1,0 +1,247 @@
+{% extends 'base/base.html' %}
+
+{% load static %}
+
+{%block title%}
+  Consulta de Encuestas
+{%endblock%}
+
+{% block content %}
+	<div style="text-align:center; margin: 0 auto;">
+
+<!-- ######################################################################################################################################################### -->
+	<!-- VIENE DE LA VIEW  consultarEncuestaPersonal -->
+
+	    <div class="container" align="center">
+			
+			<font face="small fonts" size="10" color="#049286">
+				<h2 align="center" class="form-titulo" style ="margin-left: 5px; margin-top:20px; bg-success text-white">Consulta de Encuestas del Personal</h2>
+			</font>
+
+			{% if encuestasPersonal %}
+				
+				<button class="btn btn-outline-success" onclick="location.href='{% url 'evaluacionCliente:agregar_preguntas_encuesta_personal' codigoActividad tituloEncuesta %}'">Agregar Preguntas</button>
+				<p></p>
+
+			{% else %}
+
+				<p></p>			
+			
+			{% endif %}
+	    
+		</div>
+
+<!-- ######################################################################################################################################################### -->
+	<!-- VIENE DE LA VIEW  listarEncuestaPersonal -->
+
+        <!-- Boton Buscar Agencia-->
+        {% if actividadesCon %}
+		
+        	</br>
+			<h5>Porfavor selecciona la Actividad de la Agencia para consultar sus Encuestas de Personal.</h5>
+			</br>
+
+			<div align="center" class="busqueda">
+				<form method="POST" action="{% url 'evaluacionCliente:consultar_actividad_personal' %}">
+					{% csrf_token %} 
+					<select name="codigo_actividad" id="codigo_actividad" class="form-control col-4 col-sm-3 input-style" title="Selecciona la Actividad de la Agencia Porfavor" required>
+						<option selected value=""> Seleccione Actividad de Agencia</option>
+							{% for i in actividadesCon %}
+								<option value="{{i.id_actividad}}">{{i.codigo_agencia.nombre_agencia}} | {{i.nombre_actividad}}</option> 
+							{% endfor %}
+						</option> 
+					</select></br>
+					<input class="btn btn-outline-success" type = "submit" value = "Buscar" id = "ActividadBuscar">
+				</form>
+			</div>
+		
+		{% endif %}
+        </br>
+
+<!-- ######################################################################################################################################################### -->
+	<!-- VIENE DE LA VIEW  consultarActividadPersonal -->
+
+		<!-- Boton Buscar Encuesta-->
+		{% if encuestasActividad %}
+
+			<h5>Porfavor selecciona la Encuesta que quieres consultar.</h5>
+			</br>
+
+			<div class="table-responsive" style="width:50%; display:inline-block;">
+				<table class="table table-hover text-center">
+					
+					<thead>
+						<tr>
+							<th class="text-center" style="color:#049286"><strong>Agencia:</strong></th>
+							{% for i in nombreActividad %}
+								<th class="text-center"><i>{{ i.codigo_agencia.nombre_agencia }}</i></th>
+							{% endfor %}
+						</tr>
+                        <tr>
+							<th class="text-center" style="color:#049286"><strong>Actividad:</strong></th>
+							{% for i in nombreActividad %}
+								<th class="text-center"><i>{{ i.nombre_actividad }}</i></th>
+							{% endfor %}
+						</tr>
+					</thead>
+
+				</table>
+			</div>
+
+			</br></br>
+		
+			<div align="center" class="busqueda">
+				<form method="POST" action="{% url 'evaluacionCliente:consultar_encuesta_personal' codActividad %}">
+					{% csrf_token %} 
+					<select name="titulo_encuesta" id="titulo_encuesta" class="form-control col-4 col-sm-3 input-style" title="Selecciona la Encuesta a Consultar" required>
+						<option selected value=""> Seleccione la Encuesta </option>
+							{% for i in encuestasActividad %}
+								<option value="{{i.titulo_encuesta_personal}}">{{i.titulo_encuesta_personal}}</option> 
+							{% endfor %}
+						</option> 
+					</select></br>
+					<input class="btn btn-outline-success" type = "submit" value = "Buscar" id = "ActividadBuscar"></br>
+				</form>
+			</div>
+
+			</br></br></br>
+			<h5>Si no encuentras la Encuesta que buscas,</br> puedes crear una tu mismo.</h5>
+			</br>
+			<button type="button" class="btn btn-outline-success" onclick="window.location.href='{% url 'evaluacionCliente:crear_encuesta_personal' codActividad %}'">Crear Encuesta</button>
+
+		{% else %}
+        
+            {% if codigo_actividad %}
+
+                <div class="table-responsive" style="width:50%; display:inline-block;">
+                    <table class="table table-hover text-center">
+                        
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="color:#049286"><strong>Agencia:</strong></th>
+                                {% for i in nombreActividad %}
+                                    <th class="text-center"><i>{{ i.codigo_agencia.nombre_agencia }}</i></th>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <th class="text-center" style="color:#049286"><strong>Actividad:</strong></th>
+                                {% for i in nombreActividad %}
+                                    <th class="text-center"><i>{{ i.nombre_actividad }}</i></th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+
+                    </table>
+                </div>
+
+                </br></br>
+                <h5>Esta Actividad no posee ninguna Encuesta, </br> si gustas puedes crear una tu mismo en este momento.</h5>
+                </br>
+                <button type="button" class="btn btn-outline-success" onclick="window.location.href='{% url 'evaluacionCliente:crear_encuesta_personal' codActividad %}'">Crear Encuesta</button>
+            
+            {% endif %}
+        
+        {% endif %}
+        </br>
+
+<!-- ######################################################################################################################################################### -->
+	<!-- VIENE DE LA VIEW  consultarEncuestaPersonal -->
+
+		{% if encuestasPersonal %}
+
+			<div class="table-responsive" style="width:60%; display:inline-block;">
+				<table class="table table-hover text-center">
+					
+					<thead>
+						<tr>
+							<th class="text-center" style="color:#049286">Agencia</th>
+							<th class="text-center" style="color:#049286">Actividad</th>
+							<th class="text-center" style="color:#049286">Título Encuesta</th>
+							<th class="text-center" style="color:#049286">Desde</th>
+							<th class="text-center" style="color:#049286">Hasta</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr>
+							<td><strong>{{ nombreAgencia }}</strong></td>
+                            <td><strong>{{ nombreActividad }}</strong></td>
+							<td><strong><i><a style="color:black;" href="{% url 'evaluacionCliente:editar_inf_encuesta_personal' idPer %}">{{ tituloEncuesta }}</a></i></strong></td>
+							<td><strong><i><a style="color:black;" href="{% url 'evaluacionCliente:editar_inf_encuesta_personal' idPer %}">{{ desde }}</a></i></strong></td>
+							{% ifequal hasta None %}
+								<td><strong><i><a style="color:black;" href="{% url 'evaluacionCliente:editar_inf_encuesta_personal' idPer %}"> - </a></i></strong></td>
+							{% else %}
+								<td><strong><i><a style="color:black;" href="{% url 'evaluacionCliente:editar_inf_encuesta_personal' idPer %}">{{ hasta }}</a></i></strong></td>
+							{% endifequal %}
+						</tr>
+					</tbody>
+
+				</table>
+			</div>
+
+
+		    <div class="table-responsive" style="width:93%; display:inline-block;">
+				<table id="bootstrapdatatable" class="table table-hover">
+					<thead>
+						<tr>
+							<th>Descripción de la Pregunta</th>	
+							<th>Visibilidad de la Pregunta</th>
+							<th>Opción</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						{% for enc in encuestasPersonal %}
+							<tr>
+                                <td>{{ enc.descripcion_pregunta }}</td>	
+								{% ifequal enc.visibilidad_pregunta_personal 'S' %}
+                                	<td>Visible al usuario.</td>
+								{% else %}
+									<td>NO Visible al usuario.</td>	
+								{% endifequal %}
+								<td>
+									<button type="button" class="btn btn-primary btn-sm tableButton"  onclick="location.href='{% url 'evaluacionCliente:editar_encuesta_personal' enc.id %}'" style="color:white;"> Editar </button>
+									<button type="button" class="btn btn-danger tableButton  btn-sm" data-toggle="modal" data-target="#a{{ enc.id }}">Eliminar</button>
+								</td>					
+							</tr>
+
+							<div class="modal fade" id="a{{ enc.id }}" tabindex="-1" role="dialog" aria-labelledBy="fm-modal-grid" aria-hidden="true">
+							    <div class="modal-dialog modal-lg">
+							        <div class="modal-content">
+								        
+										<div class="modal-header">
+											<i>Eliminaci&oacute;n de la pregunta:</i> <strong> {{ enc.descripcion_pregunta }} </strong>
+								            <button type="button" class="close" data-dismiss="modal">&times;</button>
+								        </div>
+							            
+										<div class="modal-body">
+									        <div class="modal-body text-center" >
+									            <h4><i>¿Realmente desea eliminar la pregunta</i> <strong> {{ enc.descripcion_pregunta }} </strong> <i>de la Encuesta?</i></h4>
+									        </div>							            
+							            
+											<div class="modal-footer">
+												<form action="{% url 'evaluacionCliente:eliminar_encuesta_personal' enc.id %}" method="POST">
+													{% csrf_token %}
+													<button class="btn btn-danger" data-align="right"><strong>Confirmar</strong></button>
+												</form>
+												<button class="btn btn-primary" data-dismiss="modal"><strong>Cancelar</strong></button>
+											</div>
+										</div>
+
+							    	</div>
+								</div>
+							</div>
+							
+						{% endfor %}
+					</tbody>
+
+				</table>
+			</div>
+		{% endif %}
+	</div>
+
+	{% block js %}
+
+	{% endblock js %}
+
+{% endblock content %}

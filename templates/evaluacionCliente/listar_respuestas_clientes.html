@@ -1,0 +1,377 @@
+{% extends 'base/base.html' %}
+
+{% load static %}
+
+{%block title%}
+  Consulta de Resultados de Encuestas
+{%endblock%}
+
+{% block head %}
+
+	{% block static %}
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+	<link type="image/x-icon" href="{% static './assets/img/logo_acopus2.jpg' %}" rel="icon">
+
+	<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+	<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+	
+
+	<!--====== Scripts -->
+	<script src="{% static 'js/sweetalert2.min.js' %}"></script>
+	<script src="{% static 'js/material.min.js' %}"></script>
+	<script src="{% static 'js/ripples.min.js' %}"></script>
+	<script src="{% static 'js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+  	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>	
+	<script src="{% static 'js/main.js' %}"></script>
+
+	{% endblock %}
+{% endblock %}
+
+{% block content %}
+	<div style="text-align:center; margin: 0 auto;">
+
+<!-- ######################################################################################################################################################### -->
+	<!-- VIENE DE LA VIEW  listarRespuestasEncuesta -->
+
+        <!-- Boton Buscar Agencia-->
+        {% if agenciasCon %}
+
+			<div class="container" align="center">
+				<font face="small fonts" size="10" color="#049286">
+					<h2 align="center" class="form-titulo" style ="margin-left: 5px; margin-top:20px; bg-success text-white">Consulta de Resultados de Encuestas</h2>
+				</font>
+			</div>
+		
+        	</br>
+			<h5>Porfavor selecciona una Agencia para consultar sus Encuestas.</h5>
+			</br>
+
+			<div align="center" class="busqueda">
+				<form method="POST" action="{% url 'evaluacionCliente:consultar_agencia_respuestas_cliente' %}">
+					{% csrf_token %} 
+					<select name="codigo_agencia" id="codigo_agencia" class="form-control col-4 col-sm-3 input-style" title="Selecciona la Agencia Porfavor" required>
+						<option selected value=""> Seleccione Agencia </option>
+							{% for i in agenciasCon %}
+								<option value="{{i.codigo_agencia}}">{{i.nombre_agencia}}</option> 
+							{% endfor %}
+						</option> 
+					</select></br>
+					<input class="btn btn-outline-success" type = "submit" value = "Buscar" id = "AgenciaBuscar">
+				</form>
+			</div>
+		
+		{% endif %}
+
+		{% if noHayEncuestas %}
+
+            <div style="text-align:center; margin: 0 auto;">
+                <div class="container" align="center">
+                    <font face="small fonts" size="10" color="#049286">
+
+                        <h1 align="center" class="form-titulo" style ="margin-left: 5px; margin-top:20px; bg-success text-white">
+                            <strong>¡No se encontraron Encuestas!</strong> 
+                        </h1> 
+                        
+                        <h2 align="center" class="form-titulo" style ="margin-left: 5px; color:black; margin-top:20px; bg-success text-white">
+                            Porfavor verifica que est&aacute; Actividad </br> posea su correspondiente encuesta.
+                        </h2>
+
+                        <div class="imgResponsiva">
+                            </br>
+                            <img src="{% static './assets/img/LogoAcopus.png' %}" style="height: 15%; width: 30%;"/> </label>
+                        </div>
+
+                        </br>
+
+                        <div class="container" align="center">
+                            <input align="center" class="btn btn-outline-success" type = "submit" value = "Inicio" id = "AgenciaBuscar" onclick="location.href='{% url 'evaluacionCliente:index' %}'">
+                        </div>
+
+                    </font>
+                </div>
+            </div>
+
+        {% endif %}
+
+<!-- ######################################################################################################################################################### -->
+	<!-- VIENE DE LA VIEW  consultarAgencia -->
+
+		<!-- Boton Buscar Encuesta-->
+		{% if encuestasAgencia %}
+
+			<div class="container" align="center">
+				<font face="small fonts" size="10" color="#049286">
+					<h2 align="center" class="form-titulo" style ="margin-left: 5px; margin-top:20px; bg-success text-white">Consulta de Resultados de Encuestas</h2>
+				</font>
+			</div>
+
+			</br>
+			<h5>Porfavor selecciona la Encuesta que quieres consultar.</h5>
+			</br>
+
+			<div class="table-responsive" style="width:50%; display:inline-block;">
+				<table class="table table-hover text-center">
+					
+					<thead>
+						<tr>
+							<th class="text-center" style="color:#049286"><strong>Agencia:</strong></th>
+							{% for i in nombreAgencia%}
+								<th class="text-center"><i>{{ i.nombre_agencia }}</i></th>
+							{% endfor %}
+						</tr>
+					</thead>
+
+				</table>
+			</div>
+
+			</br></br>
+		
+			<div align="center" class="busqueda">
+				<form method="POST" action="{% url 'evaluacionCliente:consultar_respuestas_encuesta_cliente' codAgencia %}">
+					{% csrf_token %} 
+					<select name="titulo_encuesta" id="titulo_encuesta" class="form-control col-4 col-sm-3 input-style" title="Selecciona la Encuesta a Consultar" required>
+						<option selected value=""> Seleccione la Encuesta </option>
+							{% for i in encuestasAgencia %}
+								<option value="{{i.titulo_encuesta_cliente}}">{{i.titulo_encuesta_cliente}}</option> 
+							{% endfor %}
+						</option> 
+					</select></br>
+					<input class="btn btn-outline-success" type = "submit" value = "Buscar" id = "AgenciaBuscar"></br>
+				</form>
+			</div>
+
+		{% endif %}
+
+<!-- ######################################################################################################################################################### -->
+	<!-- VIENE DE LA VIEW  consultarRespuestasEncuestaCliente -->
+
+		{% if respuestaEncuestasClientes %}
+
+			<div class="container" align="center">
+				<font face="small fonts" size="10" color="#049286">
+					<h2 align="center" class="form-titulo" style ="margin-left: 5px; margin-top:20px; bg-success text-white">Consulta de Resultados de Encuestas</h2>
+				</font>
+			</div>
+
+			</br>
+
+            <div class="table-responsive" style="width:50%; display:inline-block;">
+				<table class="table table-hover text-center">
+					
+					<thead>
+						<tr>
+							<th class="text-center" style="color:#049286">Agencia</th>
+							<th class="text-center" style="color:#049286">T&iacute;tulo Encuesta</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr>
+							<td><strong>{{ nombreAgencia }}</strong></td>
+							<td><strong><i>{{ tituloEncuesta }}</i></strong></td>
+						</tr>
+					</tbody>
+
+				</table>
+			</div>
+
+			<!-- PDF -->
+
+			<div align="center" class="inline-block">
+				<form style="display:inline" method="GET" action="{% url 'evaluacionCliente:respuestas_encuestas_cliente' %}">
+					{% csrf_token %} 
+					<input type="hidden" id="nombreAgencia" name="nombreAgencia" class="form-control" value="{{ nombreAgencia }}">
+					<input type="hidden" id="tituloEncuesta" name="tituloEncuesta" class="form-control" value="{{ tituloEncuesta }}">
+
+					<input type="hidden" id="lista" name="lista" class="form-control" value="{{ lista }}">
+
+
+		            <input class="btn btn-success" type = "submit" value = "Imprimir PDF" id = "ImprimirPDF">
+				</form>
+
+				<form style="display:inline" method="GET" action="{% url 'evaluacionCliente:exportar_respuestas_encuesta_cliente' %}">
+					{% csrf_token %} 
+					<input type="hidden" id="nombreAgencia" name="nombreAgencia" class="form-control" value="{{ nombreAgencia }}">
+					<input type="hidden" id="tituloEncuesta" name="tituloEncuesta" class="form-control" value="{{ tituloEncuesta }}">
+
+					<input type="hidden" id="lista" name="lista" class="form-control" value="{{ lista }}">
+
+		            
+		            <input class="btn btn-success" type = "submit" value = "Exportar CSV" id = "ExportarCSV">
+				</form>					
+			</div>		
+
+			</br>
+			<div class="table-responsive" style="width:80%; display:inline-block;">
+                <table id="bootstrapdatatable" class="table table-hover">
+                    
+                    <thead>
+                        <tr>
+                            <th>Pregunta</th>
+                            <th>Excelente</th>	
+							<th>Regular</th>	
+                            <th>Pesimo</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        {% for lis in lista %}
+                            <tr>
+                                <td>{{ lis.pregunta }}</td>
+								<td>{{ lis.excelente }}</td>
+								<td>{{ lis.regular }}</td>
+								<td>{{ lis.pesimo }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+
+            <div align="center" id="container0"></div>
+            <div align="center" id="container1"></div>
+            <div align="center" id="container2"></div>
+            <div align="center" id="container3"></div>
+            <div align="center" id="container4"></div>
+            <div align="center" id="container5"></div>
+            <div align="center" id="container6"></div>
+            <div align="center" id="container7"></div>
+            <div align="center" id="container8"></div>
+            <div align="center" id="container9"></div>
+            <div align="center" id="container10"></div>
+            <div align="center" id="container11"></div>
+            <div align="center" id="container12"></div>
+            <div align="center" id="container13"></div>
+            <div align="center" id="container14"></div>
+            <div align="center" id="container15"></div>
+            <div align="center" id="container16"></div>
+            <div align="center" id="container17"></div>
+            <div align="center" id="container18"></div>
+            <div align="center" id="container19"></div>
+            <div align="center" id="container20"></div>
+
+
+            
+            <script type="application/javascript">
+                
+                //var nomA = document.getElementById("lista").value;
+
+                var jlist = {{ mylist|safe }};
+
+				for(i = 0; i < jlist.length; i++){				
+	                // Make monochrome colors
+	                var pieColors = (function () {
+
+	                    var colors = [],
+	                        base = Highcharts.getOptions().colors[0],
+	                        i;
+
+	                    for (i = 0; i < 10; i += 1) {
+	                        // Start out with a darkened base color (negative brighten), and end
+	                        // up with a much brighter color
+	                        colors.push(Highcharts.color(base).brighten((i - 3) / 7).get());
+	                    };
+	                    return colors;
+	                }());
+
+					// Build the chart
+					Highcharts.chart('container' + i, {
+					    chart: {
+					        plotBackgroundColor: null,
+					        plotBorderWidth: null,
+					        plotShadow: false,
+					        type: 'pie'
+					    },
+					    title: {
+					        text: jlist[i].pregunta,
+					    },
+					    tooltip: {
+					        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+					    },
+					    accessibility: {
+					        point: {
+					            valueSuffix: '%'
+					        }
+					    },
+					    plotOptions: {
+					        pie: {
+					            allowPointSelect: true,
+					            cursor: 'pointer',
+					            dataLabels: {
+					                enabled: false
+					            },
+					            showInLegend: true,
+					            colors: [
+							     '#021d34', 
+							     '#365b77', 
+							     '#94b8d7',
+							   ],
+					        }
+					    },
+					    series: [{
+					        name: 'Porcentaje',
+					        colorByPoint: true,
+					        data: [{
+					            name: 'Excelente: '+ jlist[i].excelente,
+					            y: jlist[i].excelente,
+					        }, {
+					            name: 'Regular: ' + jlist[i].regular,
+					            y: jlist[i].regular
+					        }, {
+					            name: 'Pesimo: ' + jlist[i].pesimo,
+					            y: jlist[i].pesimo
+					        }]
+					    }]
+					});
+                
+                };
+            </script>            
+            
+		{% endif %}
+
+		{% if mensajeVacia %}
+			<div style="text-align:center; margin: 0 auto;">
+				<div class="container" align="center">
+					<font face="small fonts" size="10" color="#049286">
+
+						<h1 align="center" class="form-titulo" style ="margin-left: 5px; margin-top:20px; color: black; bg-success text-white">
+							<strong>Est&aacute; encuesta a&uacute;n no ha sido contestada.</strong> 
+						</h1> 
+						
+						<h2 align="center" class="form-titulo" style ="margin-left: 5px; color:black; margin-top:20px; color: black; bg-success text-white">
+							Para visualizar resultados de est&aacute; encuesta </br>primero debe de contestarse.
+						</h2>
+
+						<div class="container" align="center">
+							<input align="center" class="btn btn-outline-success" type = "submit" value = "Inicio" id = "AgenciaBuscar" onclick="location.href='{% url 'evaluacionCliente:index' %}'">
+						</div>
+
+					</font>
+				</div>
+			</div>
+		{% endif %}
+	</div>
+
+	{% block js %}
+
+	{% endblock js %}
+
+{% endblock content %}
+
+
+
+
+			

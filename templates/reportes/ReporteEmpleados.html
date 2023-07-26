@@ -1,0 +1,56 @@
+{% load static %}
+{%block title%}
+{%endblock%}
+{% block content %}
+
+<div class="container">
+        
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th><img src="img/coopPDF.png" width="130" height="130"></th>
+                    <th style="font-size:160%;">
+                        COOPERATIVA FINANCIERA</br>
+                        UNIVERSITARIA</br>
+                        ACOPUS de R.L.</br>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <h1 align="center"><strong> Reporte de Empleados. </strong></h1>
+
+    <table align="center">
+        <thead>
+            <tr>
+                <th align="center">Nombres</th>
+                <th align="center">Apellidos</th>  
+                <th align="center">Agencia</th>    
+                <th align="center">Departamento</th>   
+                <th align="center">C&oacute;mite</th>  
+                <th align="center">correo</th>
+            </tr>
+        </thead>
+
+        {% if reporte_empleados_filtro %}
+
+            {% for repemp in lista %}
+                <tr class="etiqueta-tr" align="center">
+                    <td align="center">{{ repemp.nombres }}</td>
+                    <td align="center">{{ repemp.apellidos }}</td>
+                    <td align="center">{{ repemp.nombre_agencia }}</td>
+                    <td align="center">{{ repemp.codigo_departamento }}</td>
+                    <td align="center">{{ repemp.id_comite }}</td>
+                    <td align="center">{{ repemp.email }}</td>
+                </tr>
+            {% endfor %}
+
+        {% endif %}   
+
+    </table>
+</div>
+
+{% endblock %}

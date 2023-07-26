@@ -1,0 +1,101 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{%block title%}
+  Listar Empleados
+{%endblock%}
+
+
+
+{% block content %}
+	<div style="text-align:center; margin: 0 auto;">
+	    
+	    <div class="container" align="center">
+			
+			<font face="small fonts" size="10" color="#049286">
+				<h2 align="center" class="form-titulo" style ="margin-left: 5px; margin-top:20px; margin-bottom:1px; bg-success text-white">Enviar correo electronico de invitacion para la actividad</h2>
+			</font>
+	    	<p></p>
+		</div>
+
+	    <!-- Boton Buscar Fech-->
+	    <div align="center" class="busqueda">
+	        <form method="POST" action="{% url 'evaluacionCliente:send_email' agencia departamento comite %}">
+	            {% csrf_token %} 
+	            
+			    <div class="form-group col-md-6">
+		            <select name="activity" class="form-control" title="Selecciona el Docente Por Favor" required>
+		                <option selected value=""> Selecciona la Actividad de la cual desea enviar una invitacion </option>
+		                    {% if actividad %}
+		                        {% for ac in actividad %}
+		                            <option value="{{ ac.id_actividad }}">{{ ac.fecha_realizacion }} - {{ ac.nombre_actividad }}</option>
+		                        {% endfor %}
+		                    {% endif %}
+		                </option> 
+		            </select>
+
+
+                    <p style ="margin-left: 5px; margin-top:5px; margin-bottom:1px; bg-success text-white" align="left"><label style ="margin-top:20px;">Cuerpo del correo:</label></p>
+                    <textarea id="bodyCorreo" class="form-control" name="bodyCorreo" rows="5" cols="40" required>Escribe aquí lo que desees que lleve el correo</textarea>
+		            
+			    </div>
+
+			    <div class="table-responsive">
+					<table id="table" class="table table-hover">
+						
+						<thead>
+							<tr>
+								<th>Nombres</th>
+								<th>Apellidos</th>	
+								<th>Agencia</th>	
+								<th>Departamento</th>	
+								<th>C&oacute;mite</th>	
+								<th>correo</th>
+							</tr>
+						</thead>
+
+							<tbody>
+
+		    		{% if reporte_empleados_filtro %}
+						{% for empage in reporte_empleados_filtro %}
+
+								<tr>
+									<td>{{ empage.nombres }}</td>
+									<td>{{ empage.apellidos }}</td>
+									<td>{{ empage.codigo_agencia }}</td>
+									<td>{{ empage.codigo_departamento }}</td>
+									<td>{{ empage.id_comite }}</td>
+									<td>{{ empage.email }}</td>
+								</tr>
+
+						{% endfor %}
+					
+						</tbody>
+						
+					</table>
+				</div>
+
+
+				<input class="btn btn-danger" type="button" onclick="history.back()" name="volver atrás" value="Volver Atrás">
+					          		
+          		<button class="btn btn-success" type = "submit" value = "Buscar" id = "fechaBuscar">Enviar Correo</button>
+
+	        </form> 
+
+	    </div>	
+
+
+	</div>
+
+
+
+				{% else %}
+					<h1>No existen empleados registrados, que cumplan estas condiciones</h1>
+				{% endif %}
+
+
+	{% block js %}
+
+	{% endblock js %}
+
+{% endblock content %}

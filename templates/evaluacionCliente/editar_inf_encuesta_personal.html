@@ -1,0 +1,73 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{%block title%}
+  Editar Encuesta
+{%endblock%}
+
+{% block content %} 
+    
+    <div style="text-align:center; margin: 0 auto;">
+	    <div class="container" align="center">
+            </br>
+            <font face="small fonts" size="10" color="#049286">
+				<h2 align="center" class="form-titulo" style ="margin-left: 5px; margin-top:20px; bg-success text-white">Edici&oacute;n de Encuesta</h2>
+			</font>
+        </div>
+
+	    <hr style="width:75%; border-color:#049286; margin-botton: 2px" >
+
+		<div align="center" class="busqueda">
+            <form method="POST" action="{% url 'evaluacionCliente:editar_inf_encuesta_personal' idEnc %}">
+                {% csrf_token %}
+
+                <div class="col-auto p-5 text-left " style="width:60%; margin:auto;">
+                    
+                    {% for i in encuesta %}
+                    
+                        <label style ="margin-top:20px;">Agencia</label>
+                        <input type="text" class="form-control" value="{{i.id_actividad.codigo_agencia.nombre_agencia}}" readonly>
+                        </br>
+                        <hr></hr>
+
+                        <label style ="margin-top:20px;">Actividad</label>
+                        <input type="text" class="form-control" value="{{i.id_actividad.nombre_actividad}}" readonly>
+                        </br>
+                        <hr></hr>
+
+                        <label style ="margin-top:20px;">Título Encuesta</label>
+                        <input type="text" class="form-control" name="titulo" value="{{i.titulo_encuesta_personal}}">
+                        </br>
+                        <hr></hr>
+
+                        <label style ="margin-top:20px;">Fecha Desde (Anterior) </label>
+                        <input type="text" class="form-control" name="desde" value="{{i.fecha_desde_personal}}" readonly>
+                        
+                        <label style ="margin-top:20px;">Fecha Desde (Nueva)</label>
+                        <input type="date" class="form-control" name="desde">
+                        </br>
+                        <hr></hr>
+
+                        <label style ="margin-top:20px;">Fecha Hasta (Anterior)</label>
+                        {% ifequal i.fecha_hasta_personal None %}
+                            <input type="text" class="form-control" name="hasta" value="-" readonly>
+                        {% else %}
+                            <input type="text" class="form-control" name="hasta" value="{{i.fecha_hasta_personal}}" readonly>
+                        {% endifequal %}
+
+                        <label style ="margin-top:20px;">Fecha Hasta (Nueva)</label>
+                        <input type="date" class="form-control" name="hasta">
+                    
+                        <div align="center" style ="margin-top:40px;">
+                            <button class="btn btn-outline-success" type="submit">Confirmar</button>
+                            <button type="button" class="btn btn-outline-danger" onclick="window.location.href='{% url 'evaluacionCliente:consultar_encuesta2_personal' codigoActividad i.titulo_encuesta_personal %}'">Cancelar</button>
+                        </div>
+                    
+                    {% endfor %}
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock content %}

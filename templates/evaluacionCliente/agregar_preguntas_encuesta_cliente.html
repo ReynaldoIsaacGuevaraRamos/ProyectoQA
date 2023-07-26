@@ -1,0 +1,57 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{%block title%}
+  Agregar Preguntas
+{%endblock%}
+
+{% block content %} 
+
+	<div style="text-align:center; margin: 0 auto;">
+	    <div class="container" align="center">
+            </br>
+            <font face="small fonts" size="10" color="#049286">
+				<h2 align="center" class="form-titulo" style ="margin-left: 5px; margin-top:20px; bg-success text-white">Agregar Preguntas a Encuesta</h2>
+			</font>
+        </div>
+
+	    <hr style="width:75%; border-color:#049286; margin-botton: 2px" >
+
+        <div align="center" class="busqueda">
+            <form method="POST" action="{% url 'evaluacionCliente:agregar_preguntas_encuesta_cliente' codigoAgencia tituloEncuesta %}">
+                {% csrf_token %}
+
+                <div class="col-auto p-5 text-left " style="width:60%; margin:auto;">
+                    <label style ="margin-top:20px;">Agencia</label>
+
+                    {% for i in agen %}
+                        <input type="text" class="form-control" value="{{i.nombre_agencia}}" readonly>
+                    {% endfor %}
+
+                    <label style ="margin-top:20px;">Titulo Encuesta</label>
+                    <input type="text" class="form-control" value="{{tituloEncuesta}}" readonly>
+                    
+                    <label style ="margin-top:20px;">Descripción Pregunta</label>
+                    <input type="text" class="form-control" id="pregunta" name="pregunta" required minlength="5">
+
+                    <label style ="margin-top:20px;">Visibilidad Pregunta</label></br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="visibilidad" name="visibilidad" value="S" checked>
+                        <label class="form-check-label" for="inlineRadio1">Visible.</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="visibilidad" name="visibilidad" value="N">
+                        <label class="form-check-label" for="inlineRadio2">NO Visible.</label>
+                    </div>
+                    
+                    <div align="center" style ="margin-top:40px;">
+                        <button class="btn btn-outline-success" type="submit">Confirmar</button>
+                        <button type="button" class="btn btn-outline-danger" onclick="window.location.href='{% url 'evaluacionCliente:consultar_encuesta2' codigoAgencia tituloEncuesta %}'">Cancelar</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
