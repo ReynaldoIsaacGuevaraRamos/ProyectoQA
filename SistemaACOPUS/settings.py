@@ -78,10 +78,10 @@ WSGI_APPLICATION = 'SistemaACOPUS.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'BDSistemaEncuesta.sqlite3',
-    }
+  #  'default': {
+  #     'ENGINE': 'django.db.backends.sqlite3',
+  #      'NAME': 'BDSistemaEncuesta.sqlite3',
+  #  }
 }
 
 
@@ -129,7 +129,9 @@ STATIC_URL = '/static/'
 
 from django.urls import reverse_lazy
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+STATICFILES_DIRS = [BASE_DIR/'static',]
+STATIC_ROOT = BASE_DIR/'staticfiles'
+#(os.path.join(BASE_DIR, 'static'),)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
